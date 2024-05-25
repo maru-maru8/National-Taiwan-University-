@@ -98,7 +98,12 @@ SELECT * FROM student_status;
 SELECT * FROM student_background;
 
 STUDENTS WHO HAVE ARC WILL BE LIVING IN TAIWAN LONG TERM SO WE COULD TRY TO MARKET MORE CLASSES, EVENTS, AND SCHOLARSHIPS TO THEM;
-SELECT first_name, last_name, student.email, (CASE WHEN ARC_granted = 'T' THEN 'granted' else NULL END ) AS ARC, (CASE WHEN scholarship_granted = 'T' THEN 'granted' else NULL END ) AS scholarship
+SELECT 
+ first_name, 
+ last_name, 
+ student.email, 
+ (CASE WHEN ARC_granted = 'T' THEN 'granted' else NULL END ) AS ARC, 
+ (CASE WHEN scholarship_granted = 'T' THEN 'granted' else NULL END ) AS scholarship
 FROM student
 JOIN student_status
 ON student_status.email = student.email
@@ -107,7 +112,11 @@ ORDER BY ARC DESC;
 
 
 SELECTING STUDENTS WHO SHOULD BE CONSIDERED FOR A SCHOLARSHIP;
-SELECT ID, midterm_pass, extra_hours, uni_classes_taken, CASE WHEN scholarship_granted = 'T' THEN 'previously_granted' ELSE NULL END AS scholarship
+SELECT ID, 
+ midterm_pass, 
+ extra_hours, 
+ uni_classes_taken, 
+ CASE WHEN scholarship_granted = 'T' THEN 'previously_granted' ELSE NULL END AS scholarship
 FROM student
 JOIN class 
 ON class.student_ID = student.ID
@@ -118,7 +127,12 @@ AND (extra_hours > 20 and uni_classes_taken > 0);
 
 
 SEEING HOW CURRENT STUDENTS WITH SCHOLARSHIP ARE PERFORMING;
-SELECT ID, class, midterm_pass, extra_hours, class.ARC_granted, uni_classes_taken
+SELECT ID, 
+ class, 
+ midterm_pass, 
+ extra_hours, 
+ class.ARC_granted, 
+ uni_classes_taken
 FROM class
 JOIN student
 ON class.student_ID = student.ID
@@ -127,7 +141,10 @@ ON student.email = student_status.email
 WHERE scholarship_granted = 'T';
 
 SEEING WHICH STUDENTS ARE PAYING EXTRA TUITION TO THE UNIVERSITY TO CONSIDER FOR FUTURE SCHOLARSHIPS;
-SELECT ID, student.last_name, country, uni_classes_taken
+SELECT ID, 
+ student.last_name, 
+ country, 
+ uni_classes_taken
 FROM student_background
 JOIN student
 ON student_background.last_name = student.last_name
@@ -138,7 +155,9 @@ ON student.email = student_status.email
 WHERE uni_classes_taken > 0;
 
 SEEING IF THE STUDENTS WHO PAY MORE TUITION FOR A SMALLER CLASS ARE HAVING MORE SUCESS IN THEIR EXAMS;
-SELECT class, COUNT(ID) AS total_students, COUNT(CASE WHEN midterm_pass = 'T' THEN 1 ELSE NULL END) AS students_passed_midterm
+SELECT class, 
+COUNT(ID) AS total_students, 
+COUNT(CASE WHEN midterm_pass = 'T' THEN 1 ELSE NULL END) AS students_passed_midterm
 FROM class 
 JOIN student 
  ON class.student_ID = student.ID
